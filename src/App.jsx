@@ -4,7 +4,6 @@ import './App.css'
 
 const validate = (values) => {
   const errors = {}
-
   if(Object.values(values.otp).some((data) => data === ""))
      errors.otp = "This field is required"
 
@@ -19,7 +18,7 @@ function App() {
     },
     validate,
     onSubmit : (values) => {
-      console.log(values)
+      console.log(values.otp.join(""))
     }
   });
 
@@ -34,10 +33,11 @@ function App() {
   const pasteText = (event) => {
     const pastedText =  event.clipboardData.getData("text");
     const fieldValues = {};
-    //console.log(pastedText);
-    formik.values.otp.forEach((value,index) => {
-      fieldValues[value] = pastedText[index] ;
-    });
+   // console.log(pastedText);
+
+   Object.keys(otp).forEach((keys,index) => {
+    fieldValues[keys] = pastedText[index] ;
+   });
     
   };
   
@@ -72,10 +72,10 @@ function App() {
          name={index} 
         // maxLength="1"
          value={value}
-         ref={(element) => (inputRef.current[index] = element)}
-         className='w-16 h-12 rounded-md mr-3 text-center text-xl' 
+         ref={(element) => (inputRef.current[index] = element)} 
          onChange={(event) => handleChange(event,index)}
          onKeyUp={(event) => handleBackSpace(event,index)}
+         className='w-16 h-12 rounded-md mr-3 text-center text-xl'
         />
     ));
   };
