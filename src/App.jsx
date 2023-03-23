@@ -1,10 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
-import { useFormik } from 'formik';
+import { Formik, useFormik } from 'formik';
 import './App.css'
 
 function App() {
   
-  const {errors, touched, handleChange: formikHandle, handleBlur} = useFormik();
+  const formik = useFormik({
+    initialValues:{
+      otp : {
+        digitOne : "",
+        digitTwo : "",
+        digitThree : "",
+        digitFour : "",
+        digitFive : "",
+        digitSix : "",
+      }
+    }
+  });
 
   const inputRef = useRef({})
   const [otp, setOtp] = useState({
@@ -14,7 +25,7 @@ function App() {
     digitFour : "",
     digitFive : "",
     digitSix : "",
-  })
+  });
  
   useEffect(() => {
     inputRef.current[0].focus();
@@ -22,7 +33,7 @@ function App() {
     inputRef.current[0].addEventListener("paste", pasteText);
 
     return () => inputRef.current[0].removeEventListener("paste", pasteText);
-  }, [])
+  }, []);
 
   const pasteText = (event) => {
     const pastedText =  event.clipboardData.getData("text");
@@ -34,12 +45,20 @@ function App() {
 
     setOtp(fieldValues);
     inputRef.current[5].focus();
-  }
+  };
   
   const handleChange = (event, index) => {
     const { name , value }  = event.target;
 
     if(/[a-z]/gi.test(value)) return;
+
+    formik.setValues(prev => ({
+      ...prev,
+      otp: {
+        ...prev.otp,
+        [name] : value,
+      }
+    }))
 
     setOtp(prev => ({
       ...prev,
@@ -55,7 +74,7 @@ function App() {
     if(event.key === "Backspace")
       if(index > 0)
         inputRef.current[index -1].focus();
-  }
+  };
 
   const renderInput =() =>{
     return Object.keys(otp).map(( keys, index) => (
@@ -77,7 +96,9 @@ function App() {
   return (
     <form action="">
       <h3 className='text-3xl mb-8 '>Please fill in the otp</h3>
-      <div>{renderInput()}</div>   
+       <Formik>
+         <div>{renderInput()} </div>
+       </Formik>   
       <button className='mt-4 w-34 border border-solid bg-[#3b3b3b] rounded hover:bg-[#252525] hover:border-[#3b3b3b3b]'>Submit</button>
     </form>
   )
