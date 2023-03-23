@@ -21,7 +21,15 @@ function App() {
   }, [])
 
   const pasteText = (event) => {
-    event.clipboardData.getData("text")
+    const pastedText =  event.clipboardData.getData("text");
+    const fieldValues = {};
+    //console.log(pastedText);
+    Object.keys(otp).forEach((keys,index) => {
+      fieldValues[keys] = pastedText[index] ;
+    });
+
+    setOtp(fieldValues);
+    inputRef.current[5].focus();
   }
   
   const handleChange = (event, index) => {
@@ -60,6 +68,7 @@ function App() {
         />
     ));
   };
+
 
   return (
     <form action="">
