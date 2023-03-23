@@ -35,8 +35,8 @@ function App() {
     const fieldValues = {};
    // console.log(pastedText);
 
-   Object.keys(otp).forEach((keys,index) => {
-    fieldValues[keys] = pastedText[index] ;
+   formik.values.otp.forEach((value,index) => {
+    fieldValues[value] = pastedText[index] ;
    });
     
   };
