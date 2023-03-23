@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
+import { useFormik } from 'formik';
 import './App.css'
 
 function App() {
+  
+  const {errors, touched, handleChange: formikHandle, handleBlur} = useFormik();
+
   const inputRef = useRef({})
   const [otp, setOtp] = useState({
     digitOne : "",
